@@ -10,6 +10,7 @@ part 'pizza_layout_state.dart';
 class PizzaLayoutCubit extends Cubit<PizzaLayoutState> {
   PizzaLayoutCubit(this.pizzaRepo) : super(PizzaInitial());
   final PizzaRepo pizzaRepo;
+  List<PizzaItemModel> items=[];
   void loadPizza()async{
     emit(PizzaLoading());
     try{

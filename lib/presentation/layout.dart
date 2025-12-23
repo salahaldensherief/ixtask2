@@ -6,11 +6,15 @@ import 'package:task2ix/presentation/fav_screen.dart';
 import 'package:task2ix/presentation/pizza_checkout_screen.dart';
 import 'package:task2ix/presentation/widgets/pizza_card.dart';
 
+import '../data/repos/pizza_repo.dart';
+import '../data/source/local/pizza_data_source.dart';
+
 class Layout extends StatelessWidget {
   const Layout({super.key});
 
   @override
   Widget build(BuildContext context) {
+    PizzaLayoutCubit cubit=PizzaLayoutCubit(PizzaRepo(PizzaDataSource()));
     return Scaffold(
       appBar: AppBar(title: const Text('Pizza Menu'),
           centerTitle: true,
@@ -42,13 +46,14 @@ class Layout extends StatelessWidget {
                   childAspectRatio: 0.75,
                 ),
                 itemBuilder: (context, index) {
-                  final pizza = pizzas[index];
+              final pizza = pizzas[index];
                   return GestureDetector(
                     onTap: () {
+                      cubit.items.add(pizza);
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) =>
-                              PizzaCheckoutScreen(pizzas: pizzas, pizza),
+                              PizzaCheckoutScreen(pizzas: pizzas, items: cubit.items,),
                         ),
                       );
                     },
