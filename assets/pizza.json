@@ -1,0 +1,291 @@
+[
+  {
+    "id": "p1",
+    "name": "Margherita",
+    "description": "Cheese and tomato",
+    "basePrice": 8.50,
+    "icon": "🍕",
+    "options": [
+      {
+        "id": "o1",
+        "name": "Extra Cheese",
+        "description": "Cheese topping",
+        "basePrice": 2.00,
+        "icon": "🧀",
+        "options": [],
+        "selectOptions": []
+      },
+      {
+        "id": "o2",
+        "name": "Mushrooms",
+        "description": "Fresh mushrooms",
+        "basePrice": 1.50,
+        "icon": "🍄",
+        "options": [],
+        "selectOptions": []
+      },
+      {
+        "id": "o8",
+        "name": "Basil",
+        "description": "Fresh basil leaves",
+        "basePrice": 0.80,
+        "icon": "🌿",
+        "options": [],
+        "selectOptions": []
+      }
+    ],
+    "selectOptions": []
+  },
+  {
+    "id": "p2",
+    "name": "Pepperoni",
+    "description": "Pepperoni slices",
+    "basePrice": 9.20,
+    "icon": "🍕",
+    "options": [
+      {
+        "id": "o3",
+        "name": "Extra Pepperoni",
+        "description": "More meat",
+        "basePrice": 2.20,
+        "icon": "🌶️",
+        "options": [],
+        "selectOptions": []
+      },
+      {
+        "id": "o9",
+        "name": "Cheese Burst",
+        "description": "Cheese layer",
+        "basePrice": 2.50,
+        "icon": "🧀",
+        "options": [],
+        "selectOptions": []
+      }
+    ],
+    "selectOptions": []
+  },
+  {
+    "id": "p3",
+    "name": "BBQ Chicken",
+    "description": "BBQ sauce & chicken",
+    "basePrice": 11.80,
+    "icon": "🍗",
+    "options": [
+      {
+        "id": "o4",
+        "name": "BBQ Sauce",
+        "description": "Extra BBQ",
+        "basePrice": 1.00,
+        "icon": "🍶",
+        "options": [],
+        "selectOptions": []
+      },
+      {
+        "id": "o10",
+        "name": "Onions",
+        "description": "Fresh onions",
+        "basePrice": 0.70,
+        "icon": "🧅",
+        "options": [],
+        "selectOptions": []
+      }
+    ],
+    "selectOptions": []
+  },
+  {
+    "id": "p4",
+    "name": "Veggie Delight",
+    "description": "Vegetables mix",
+    "basePrice": 7.50,
+    "icon": "🥬",
+    "options": [
+      {
+        "id": "o5",
+        "name": "Black Olives",
+        "description": "Fresh olives",
+        "basePrice": 1.20,
+        "icon": "🫒",
+        "options": [],
+        "selectOptions": []
+      },
+      {
+        "id": "o11",
+        "name": "Red Peppers",
+        "description": "Sweet red peppers",
+        "basePrice": 1.00,
+        "icon": "🫑",
+        "options": [],
+        "selectOptions": []
+      },
+      {
+        "id": "o12",
+        "name": "Spinach",
+        "description": "Fresh spinach leaves",
+        "basePrice": 0.90,
+        "icon": "🥬",
+        "options": [],
+        "selectOptions": []
+      }
+    ],
+    "selectOptions": []
+  },
+  {
+    "id": "p5",
+    "name": "Hawaiian",
+    "description": "Pineapple and cheese",
+    "basePrice": 10.00,
+    "icon": "🍍",
+    "options": [
+      {
+        "id": "o6",
+        "name": "Extra Pineapple",
+        "description": "Sweet topping",
+        "basePrice": 1.50,
+        "icon": "🍍",
+        "options": [],
+        "selectOptions": []
+      },
+      {
+        "id": "o13",
+        "name": "Ham",
+        "description": "Smoked ham slices",
+        "basePrice": 2.00,
+        "icon": "🥓",
+        "options": [],
+        "selectOptions": []
+      }
+    ],
+    "selectOptions": []
+  },
+  {
+    "id": "p6",
+    "name": "Four Cheese",
+    "description": "4 cheese mix",
+    "basePrice": 12.00,
+    "icon": "🧀",
+    "options": [
+      {
+        "id": "o14",
+        "name": "Parmesan",
+        "description": "Extra parmesan",
+        "basePrice": 1.50,
+        "icon": "🧀",
+        "options": [],
+        "selectOptions": []
+      },
+      {
+        "id": "o15",
+        "name": "Cheddar",
+        "description": "Extra cheddar",
+        "basePrice": 1.50,
+        "icon": "🧀",
+        "options": [],
+        "selectOptions": []
+      }
+    ],
+    "selectOptions": []
+  },
+  {
+    "id": "p7",
+    "name": "Spicy Chicken",
+    "description": "Very spicy taste",
+    "basePrice": 13.20,
+    "icon": "🌶️",
+    "options": [
+      {
+        "id": "o7",
+        "name": "Extra Spicy",
+        "description": "Add hot chili",
+        "basePrice": 1.20,
+        "icon": "🔥",
+        "options": [],
+        "selectOptions": []
+      },
+      {
+        "id": "o16",
+        "name": "Jalapenos",
+        "description": "Spicy peppers",
+        "basePrice": 1.00,
+        "icon": "🌶️",
+        "options": [],
+        "selectOptions": []
+      }
+    ],
+    "selectOptions": []
+  },
+  {
+    "id": "p8",
+    "name": "Seafood Special",
+    "description": "Shrimp & calamari",
+    "basePrice": 14.50,
+    "icon": "🦐",
+    "options": [
+      {
+        "id": "o17",
+        "name": "Extra Shrimp",
+        "description": "More shrimp",
+        "basePrice": 2.50,
+        "icon": "🦐",
+        "options": [],
+        "selectOptions": []
+      }
+    ],
+    "selectOptions": []
+  },
+  {
+    "id": "p9",
+    "name": "Meat Lovers",
+    "description": "Bacon, ham, sausage",
+    "basePrice": 15.00,
+    "icon": "🥩",
+    "options": [
+      {
+        "id": "o18",
+        "name": "Extra Bacon",
+        "description": "Add more bacon",
+        "basePrice": 2.00,
+        "icon": "🥓",
+        "options": [],
+        "selectOptions": []
+      },
+      {
+        "id": "o19",
+        "name": "Extra Sausage",
+        "description": "More sausage",
+        "basePrice": 2.50,
+        "icon": "🌭",
+        "options": [],
+        "selectOptions": []
+      }
+    ],
+    "selectOptions": []
+  },
+  {
+    "id": "p10",
+    "name": "Mushroom Mania",
+    "description": "Loaded with mushrooms",
+    "basePrice": 12.50,
+    "icon": "🍄",
+    "options": [
+      {
+        "id": "o20",
+        "name": "Extra Mushrooms",
+        "description": "More mushrooms",
+        "basePrice": 1.50,
+        "icon": "🍄",
+        "options": [],
+        "selectOptions": []
+      },
+      {
+        "id": "o21",
+        "name": "Truffle Oil",
+        "description": "Luxury topping",
+        "basePrice": 3.00,
+        "icon": "🫒",
+        "options": [],
+        "selectOptions": []
+      }
+    ],
+    "selectOptions": []
+  }
+]
