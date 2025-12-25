@@ -1,25 +1,34 @@
-import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 part 'pizza_item_model.g.dart';
-@HiveType(typeId: 0)
 
+@HiveType(typeId: 0)
 class PizzaItemModel {
   @HiveField(0)
-  final String ?id;
+  final String? id;
+
   @HiveField(1)
   final String name;
+
   @HiveField(2)
   final String description;
+
   @HiveField(3)
   final double basePrice;
+
   @HiveField(4)
   final String? icon;
+
   @HiveField(5)
   List<PizzaItemModel> options;
+
   @HiveField(6)
   List<PizzaItemModel> selectOptions;
+
   @HiveField(7)
   List<PizzaItemModel> fav;
+
+  @HiveField(8)
+  int quantity;
 
   PizzaItemModel({
     this.id,
@@ -29,7 +38,8 @@ class PizzaItemModel {
     this.icon,
     this.options = const [],
     this.selectOptions = const [],
-    this.fav = const []
+    this.fav = const [],
+    this.quantity = 1,
   });
 
   factory PizzaItemModel.fromJson(Map<String, dynamic> json) {
@@ -39,17 +49,19 @@ class PizzaItemModel {
       description: json["description"] ?? "",
       basePrice: (json["basePrice"] ?? 0).toDouble(),
       icon: json["icon"],
-      options: (json["options"] as List<dynamic>?)
-          ?.map((e) => PizzaItemModel.fromJson(e))
-          .toList() ??
+      quantity: json["quantity"] ?? 1,
+      options:
+          (json["options"] as List<dynamic>?)
+              ?.map((e) => PizzaItemModel.fromJson(e))
+              .toList() ??
           [],
-      selectOptions: (json["selectOptions"] as List<dynamic>?)
-          ?.map((e) => PizzaItemModel.fromJson(e))
-          .toList() ??
+      selectOptions:
+          (json["selectOptions"] as List<dynamic>?)
+              ?.map((e) => PizzaItemModel.fromJson(e))
+              .toList() ??
           [],
     );
   }
-
 
   Map<String, dynamic> toJson() {
     return {
@@ -58,49 +70,55 @@ class PizzaItemModel {
       "description": description,
       "basePrice": basePrice,
       "icon": icon,
+      "quantity": quantity,
       "options": options.map((e) => e.toJson()).toList(),
       "selectOptions": selectOptions.map((e) => e.toJson()).toList(),
     };
   }
 
-
   PizzaItemModel copyWith({
-
-    List<PizzaItemModel>? selectOptions
+    int? quantity,
+    List<PizzaItemModel>? selectOptions,
   }) {
     return PizzaItemModel(
-        id: id,
-        description: description,
-        name: name,
-        options: options,
-        basePrice: basePrice,
-        icon: icon,
-      selectOptions: selectOptions ?? this.selectOptions ,
+      id: id,
+      name: name,
+      description: description,
+      basePrice: basePrice,
+      icon: icon,
+      options: options,
+      fav: fav,
+      quantity: quantity ?? this.quantity,
+      selectOptions: selectOptions ?? this.selectOptions,
     );
   }
-
 
   double get getBasePrice => basePrice;
 
   double get calcItemPrice {
-    double _price = 0.0;
+    double optionsPrice = 0.0;
+
+
 
     for (var element in selectOptions) {
-      _price += element.getBasePrice;
+      optionsPrice += element.getBasePrice;
     }
-    return getBasePrice + _price;
+
+    return (getBasePrice + optionsPrice) * quantity;
   }
+
   double get itemAfterApplyDiscount {
-    return calcItemPrice -20 ;
+    return calcItemPrice - 20;
   }
-
-  void addRemoveOption({required PizzaItemModel option}) {
-    if (selectOptions.any((element) => element.id == option.id,)) {
+  bool addRemoveOption({required PizzaItemModel option}) {
+    if (selectOptions.contains(option)) {
       selectOptions.remove(option);
+      return true;
+    } else {
+      selectOptions.add(option);
+      return false;
     }
-    selectOptions.add(option);
   }
-
   double getCouponDiscount(String coupon, double price) {
     double discount = 0.0;
 
@@ -114,9 +132,6 @@ class PizzaItemModel {
       default:
         discount = 0.0;
     }
-
     return discount;
   }
-  }
-
-  void applyDiscount(){}
+}

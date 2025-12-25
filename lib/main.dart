@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:task2ix/presentation/cubits/fav/fav_cubit.dart';
-import 'package:task2ix/presentation/cubits/layout/pizza_layout_cubit.dart';
-import 'package:task2ix/presentation/layout.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'presentation/layout.dart';
+import 'presentation/cubits/layout/pizza_layout_cubit.dart';
 
 import 'data/repos/pizza_repo.dart';
 import 'data/source/local/pizza_data_source.dart';
 
 void main() async {
-  runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -25,12 +26,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: false,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home:
-          BlocProvider(
-            create:  (context) => PizzaLayoutCubit(PizzaRepo(PizzaDataSource()))..loadPizza(),
-        child: const Layout(),
-      )
-
+      home: BlocProvider(
+        create: (context) => PizzaLayoutCubit(PizzaRepo(PizzaDataSource()))..loadPizza(),
+        child: Layout(),
+      ),
     );
   }
 }

@@ -1,6 +1,4 @@
 part of 'pizza_layout_cubit.dart';
-
-@immutable
 sealed class PizzaLayoutState {}
 
 final class PizzaInitial extends PizzaLayoutState {}
@@ -15,3 +13,4 @@ final class PizzaSuccess extends PizzaLayoutState {
 
   PizzaSuccess(this.pizza);
 }
+

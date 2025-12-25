@@ -2,21 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../data/models/pizza_item_model.dart';
 
-class PizzaCard extends StatefulWidget {
+class PizzaCard extends StatelessWidget {
   final PizzaItemModel? pizzas;
-  PizzaCard({super.key, this.pizzas});
-
-  @override
-  State<PizzaCard> createState() => _PizzaCardState();
-}
-
-class _PizzaCardState extends State<PizzaCard> {
-bool isFav = false;
-
-  void initState() {
-    super.initState();
-    isFav = false;
-  }
+  final Icon icon;
+  void Function()? onPressed;
+  PizzaCard({super.key, this.pizzas, required this.icon,required this.onPressed});
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -29,17 +19,17 @@ bool isFav = false;
           children: [
             Expanded(
               child: Center(
-                child: Text(widget.pizzas!.icon!, style: TextStyle(fontSize: 64)),
+                child: Text(pizzas!.icon!, style: TextStyle(fontSize: 64)),
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              widget.pizzas!.name,
+              pizzas!.name,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             Text(
-              widget.pizzas!.description,
+              pizzas!.description,
               style: TextStyle(fontSize: 12, color: Colors.grey),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -47,18 +37,15 @@ bool isFav = false;
             Row(
               children: [
                 Text(
-                  '\$${widget.pizzas!.basePrice}',
+                  '\$${pizzas!.basePrice}',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.deepOrange,
                   ),
                 ),
-                TextButton(onPressed:(){
-                  setState(() {
-                    isFav = !isFav;
-                  });
-                } , child: Icon(isFav ? Icons.favorite: Icons.favorite_border))
+                TextButton(onPressed:onPressed,
+                child:   icon)
               ],
             ),
           ],

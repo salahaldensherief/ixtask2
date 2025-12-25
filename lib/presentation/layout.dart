@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task2ix/presentation/cubits/fav/fav_cubit.dart';
 import 'package:task2ix/presentation/cubits/layout/pizza_layout_cubit.dart';
-import 'package:task2ix/presentation/fav_screen.dart';
-import 'package:task2ix/presentation/pizza_checkout_screen.dart';
+import 'package:task2ix/presentation/pizza_cart_screen.dart';
 import 'package:task2ix/presentation/widgets/pizza_card.dart';
 
 import '../data/repos/pizza_repo.dart';
@@ -14,27 +12,15 @@ class Layout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PizzaLayoutCubit cubit=PizzaLayoutCubit(PizzaRepo(PizzaDataSource()));
+    PizzaLayoutCubit cubit = PizzaLayoutCubit(PizzaRepo(PizzaDataSource()));
     return Scaffold(
-      appBar: AppBar(title: const Text('Pizza Menu'),
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(Icons.favorite),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                  BlocProvider(
-                    create: (context) => FavCubit(),
-                    child: FavScreen(),
-                  ),));
-            },
-          )),
+      appBar: AppBar(title: const Text('Pizza Menu'), centerTitle: true),
       body: BlocBuilder<PizzaLayoutCubit, PizzaLayoutState>(
         builder: (context, state) {
           if (state is PizzaLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is PizzaSuccess) {
             final pizzas = state.pizza;
-            print(pizzas.length);
             return Padding(
               padding: const EdgeInsets.all(12),
               child: GridView.builder(
@@ -46,21 +32,21 @@ class Layout extends StatelessWidget {
                   childAspectRatio: 0.75,
                 ),
                 itemBuilder: (context, index) {
-              final pizza = pizzas[index];
-                  return GestureDetector(
-                    onTap: () {
+                  return PizzaCard(
+                    pizzas: pizzas[index],
+                    icon: Icon(Icons.shopping_cart),
+                    onPressed: () {
+                      final pizza = pizzas[index];
                       cubit.items.add(pizza);
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) =>
-                              PizzaCheckoutScreen(pizzas: pizzas, items: cubit.items,),
+                          builder:
+                              (context) => PizzaCartScreen(
+                                items: cubit.items,
+                              ),
                         ),
                       );
                     },
-                    child: BlocProvider(
-                      create: (context) => FavCubit(),
-                      child: PizzaCard(pizzas: pizza),
-                    ),
                   );
                 },
               ),
