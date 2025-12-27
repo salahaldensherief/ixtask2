@@ -5,7 +5,6 @@ import '../../data/models/pizza_item_model.dart';
 class PizzaSelectCard extends StatelessWidget {
   final PizzaItemModel pizza;
   final VoidCallback onAdd;
-
   const PizzaSelectCard({super.key, required this.pizza, required this.onAdd});
   @override
   Widget build(BuildContext context) {

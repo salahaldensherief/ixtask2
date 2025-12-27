@@ -99,7 +99,6 @@ class PizzaItemModel {
     double optionsPrice = 0.0;
 
 
-
     for (var element in selectOptions) {
       optionsPrice += element.getBasePrice;
     }
@@ -110,6 +109,7 @@ class PizzaItemModel {
   double get itemAfterApplyDiscount {
     return calcItemPrice - 20;
   }
+
   bool addRemoveOption({required PizzaItemModel option}) {
     if (selectOptions.contains(option)) {
       selectOptions.remove(option);
@@ -119,6 +119,7 @@ class PizzaItemModel {
       return false;
     }
   }
+
   double getCouponDiscount(String coupon, double price) {
     double discount = 0.0;
 
@@ -133,5 +134,10 @@ class PizzaItemModel {
         discount = 0.0;
     }
     return discount;
+  }
+
+  void increaseQty() => quantity++;
+  void decreaseQty() {
+    if (quantity > 1) quantity--;
   }
 }

@@ -12,5 +12,5 @@ final class PizzaSuccess extends PizzaLayoutState {
  final List<PizzaItemModel> pizza;
 
   PizzaSuccess(this.pizza);
-}
 
+}

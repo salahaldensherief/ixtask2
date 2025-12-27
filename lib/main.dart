@@ -20,15 +20,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        useMaterial3: false,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: BlocProvider(
-        create: (context) => PizzaLayoutCubit(PizzaRepo(PizzaDataSource()))..loadPizza(),
-        child: Layout(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create:  (context) => PizzaLayoutCubit(PizzaRepo(PizzaDataSource()))..loadPizza(),)  ,
+
+      ],
+      child: GestureDetector(
+        onTap: ()=>  FocusScope.of(context).unfocus(),
+
+
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            useMaterial3: false,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          ),
+          home: Layout(),
+        ),
       ),
     );
   }

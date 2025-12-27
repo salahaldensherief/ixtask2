@@ -14,7 +14,11 @@ class Layout extends StatelessWidget {
   Widget build(BuildContext context) {
     PizzaLayoutCubit cubit = PizzaLayoutCubit(PizzaRepo(PizzaDataSource()));
     return Scaffold(
-      appBar: AppBar(title: const Text('Pizza Menu'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Pizza Menu'),
+        centerTitle: true,
+
+      ),
       body: BlocBuilder<PizzaLayoutCubit, PizzaLayoutState>(
         builder: (context, state) {
           if (state is PizzaLoading) {
@@ -41,9 +45,7 @@ class Layout extends StatelessWidget {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder:
-                              (context) => PizzaCartScreen(
-                                items: cubit.items,
-                              ),
+                              (context) => PizzaCartScreen(items: cubit.items),
                         ),
                       );
                     },
