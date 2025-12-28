@@ -7,14 +7,9 @@ import 'presentation/cubits/layout/pizza_layout_cubit.dart';
 
 import 'data/repos/pizza_repo.dart';
 import 'data/source/local/pizza_data_source.dart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-
+void main()  {
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -23,12 +18,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create:  (context) => PizzaLayoutCubit(PizzaRepo(PizzaDataSource()))..loadPizza(),)  ,
-
       ],
       child: GestureDetector(
         onTap: ()=>  FocusScope.of(context).unfocus(),
-
-
         child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(

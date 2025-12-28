@@ -9,7 +9,6 @@ import '../data/source/local/pizza_data_source.dart';
 
 class Layout extends StatelessWidget {
   const Layout({super.key});
-
   @override
   Widget build(BuildContext context) {
     PizzaLayoutCubit cubit = PizzaLayoutCubit(PizzaRepo(PizzaDataSource()));

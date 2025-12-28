@@ -1,33 +1,16 @@
 import 'package:hive/hive.dart';
-part 'pizza_item_model.g.dart';
 
-@HiveType(typeId: 0)
 class PizzaItemModel {
-  @HiveField(0)
   final String? id;
-
-  @HiveField(1)
   final String name;
-
-  @HiveField(2)
   final String description;
-
-  @HiveField(3)
   final double basePrice;
-
-  @HiveField(4)
   final String? icon;
-
-  @HiveField(5)
   List<PizzaItemModel> options;
-
-  @HiveField(6)
   List<PizzaItemModel> selectOptions;
-
-  @HiveField(7)
   List<PizzaItemModel> fav;
 
-  @HiveField(8)
+
   int quantity;
 
   PizzaItemModel({
