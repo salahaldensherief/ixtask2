@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:task2ix/data/models/cart_model.dart';
+import 'package:task2ix/presentation/widgets/payment_summary_widget.dart';
 import '../data/models/pizza_item_model.dart';
 import 'package:task2ix/presentation/widgets/recommended_pizza_widget.dart';
 
 class PizzaCartScreen extends StatefulWidget {
   final List<PizzaItemModel> items;
-  const PizzaCartScreen({super.key, required this.items});
+  final PizzaItemModel item;
+  const PizzaCartScreen({super.key, required this.items, required this.item});
   @override
   State<PizzaCartScreen> createState() => _PizzaCartScreenState();
 }
+
 class _PizzaCartScreenState extends State<PizzaCartScreen> {
   @override
   void initState() {
@@ -102,7 +105,7 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                                   icon: Icon(Icons.delete, color: Colors.red),
                                   onPressed: () {
                                     setState(() {
-                                      cart.removeItem(item.id!);
+                                      cart.removeItem(item.cartItemId);
                                       if (cart.items.isEmpty) {
                                         Navigator.pop(context);
                                       }
@@ -166,7 +169,7 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                               return GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    item.addRemoveOption(option: option);
+                                    item.toggleOption(option);
                                   });
                                 },
                                 child: Container(
@@ -222,14 +225,39 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                 ),
                 onChanged: (value) {
                   double discount = 0;
-                  for (var item in widget.items) {
-                    discount += item.getCouponDiscount(value, item.basePrice);
+                  for (var item in cart.items) {
+                    discount += item.getCouponDiscount(
+                      value,
+                      item.calcItemPrice,
+                    );
                   }
+
                   setState(() {
                     couponDiscount = discount;
                   });
                 },
               ),
+              SizedBox(height: 20),
+              Text(
+                'Payment summary',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+              SizedBox(height: 20),
+
+              PaymentSummaryWidget(
+                value: '\$ ${cart.subTotalPrice.toStringAsFixed(2)}',
+                label: 'Subtotal',
+              ),
+              SizedBox(height: 20),
+              PaymentSummaryWidget(
+                value:'\$${cart.deliveryFee.toStringAsFixed(2)}',
+                label: 'Delivery fee',
+              ),
+              SizedBox(height: 20), PaymentSummaryWidget(
+                value: cart.taxPercent.toStringAsFixed(2),
+                label: 'Tax Amount',
+              ),
+              SizedBox(height: 20),
             ],
           ),
         ),

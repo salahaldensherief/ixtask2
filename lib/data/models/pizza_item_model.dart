@@ -1,29 +1,46 @@
-import 'package:hive/hive.dart';
+import 'package:flutter/material.dart';
 
 class PizzaItemModel {
   final String? id;
+
+  final String cartItemId;
+
   final String name;
   final String description;
   final double basePrice;
   final String? icon;
-  List<PizzaItemModel> options;
-  List<PizzaItemModel> selectOptions;
-  List<PizzaItemModel> fav;
 
+  final List<PizzaItemModel> options;
+
+  final List<PizzaItemModel> selectOptions;
 
   int quantity;
 
   PizzaItemModel({
     this.id,
+    String? cartItemId,
     this.name = '',
     this.description = '',
     this.basePrice = 0.0,
     this.icon,
     this.options = const [],
-    this.selectOptions = const [],
-    this.fav = const [],
+    List<PizzaItemModel>? selectOptions,
     this.quantity = 1,
-  });
+  }) : selectOptions = selectOptions ?? [],
+       cartItemId = cartItemId ?? UniqueKey().toString();
+
+  PizzaItemModel cloneForCart() {
+    return PizzaItemModel(
+      id: id,
+      name: name,
+      description: description,
+      basePrice: basePrice,
+      icon: icon,
+      options: options,
+      selectOptions: [],
+      quantity: 1,
+    );
+  }
 
   factory PizzaItemModel.fromJson(Map<String, dynamic> json) {
     return PizzaItemModel(
@@ -45,7 +62,6 @@ class PizzaItemModel {
           [],
     );
   }
-
   Map<String, dynamic> toJson() {
     return {
       "id": id,
@@ -59,53 +75,16 @@ class PizzaItemModel {
     };
   }
 
-  PizzaItemModel copyWith({
-    int? quantity,
-    List<PizzaItemModel>? selectOptions,
-  }) {
-    return PizzaItemModel(
-      id: id,
-      name: name,
-      description: description,
-      basePrice: basePrice,
-      icon: icon,
-      options: options,
-      fav: fav,
-      quantity: quantity ?? this.quantity,
-      selectOptions: selectOptions ?? this.selectOptions,
-    );
-  }
-
   double get getBasePrice => basePrice;
 
   double get calcItemPrice {
-    double optionsPrice = 0.0;
+    final optionsPrice = selectOptions.fold(0.0, (sum, e) => sum + e.basePrice);
 
-
-    for (var element in selectOptions) {
-      optionsPrice += element.getBasePrice;
-    }
-
-    return (getBasePrice + optionsPrice) * quantity;
-  }
-
-  double get itemAfterApplyDiscount {
-    return calcItemPrice - 20;
-  }
-
-  bool addRemoveOption({required PizzaItemModel option}) {
-    if (selectOptions.contains(option)) {
-      selectOptions.remove(option);
-      return true;
-    } else {
-      selectOptions.add(option);
-      return false;
-    }
+    return (basePrice + optionsPrice) * quantity;
   }
 
   double getCouponDiscount(String coupon, double price) {
     double discount = 0.0;
-
     switch (coupon) {
       case '20':
         discount = 0.2 * price;
@@ -119,7 +98,16 @@ class PizzaItemModel {
     return discount;
   }
 
+  void toggleOption(PizzaItemModel option) {
+    if (selectOptions.any((e) => e.id == option.id)) {
+      selectOptions.removeWhere((e) => e.id == option.id);
+    } else {
+      selectOptions.add(option);
+    }
+  }
+
   void increaseQty() => quantity++;
+
   void decreaseQty() {
     if (quantity > 1) quantity--;
   }

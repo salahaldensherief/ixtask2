@@ -1,20 +1,37 @@
-import 'package:task2ix/data/models/pizza_item_model.dart';
+import 'pizza_item_model.dart';
 
 class CartModel {
   final List<PizzaItemModel> items;
-  int quantity;
+  int deliveryFee = 5;
+  double taxPercent = 0.14;
 
-  CartModel(
-  {this.quantity = 1,required this.items});
+  CartModel({
+    required this.items,
+    this.deliveryFee = 5,
+    this.taxPercent = 0.14,
+  });
 
-  double get totalPrice{
-    return items.fold(0.0, (sum , item)=> sum +item.calcItemPrice*quantity);
+  double get subTotalPrice {
+    return items.fold(0.0, (sum, item) => sum + item.calcItemPrice);
   }
 
-  void removeItem(String itemId){
-    items.removeWhere((items) => items.id == itemId);
+  double get totalPrice {
+    return subTotalPrice + deliveryFee + taxPercent;
   }
-  void addItem(PizzaItemModel item) {
-    items.add(item);
+
+  double get taxAmount => subTotalPrice * taxPercent;
+
+  void setTaxPercent(double percent) => taxPercent = percent;
+
+  void setDeliveryFee(int price) {
+    deliveryFee = price;
+  }
+
+  void addItem(PizzaItemModel pizza) {
+    items.add(pizza.cloneForCart());
+  }
+
+  void removeItem(String cartItemId) {
+    items.removeWhere((item) => item.cartItemId == cartItemId);
   }
 }

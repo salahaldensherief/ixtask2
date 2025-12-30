@@ -44,7 +44,7 @@ class Layout extends StatelessWidget {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder:
-                              (context) => PizzaCartScreen(items: cubit.items),
+                              (context) => PizzaCartScreen(items: cubit.items,item: pizzas[index],),
                         ),
                       );
                     },
