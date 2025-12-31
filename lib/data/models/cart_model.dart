@@ -3,7 +3,7 @@ import 'pizza_item_model.dart';
 
 
 const Map<String, CouponModel> coupons = {
-  '50OFF': CouponModel(CouponType.fixed, 50),
+  '5': CouponModel(CouponType.fixed, 5),
   '10P': CouponModel(CouponType.percent, 10),
   '20P': CouponModel(CouponType.percent, 20),
 };
