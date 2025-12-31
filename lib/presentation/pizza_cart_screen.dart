@@ -7,12 +7,10 @@ import 'package:task2ix/presentation/widgets/recommended_pizza_widget.dart';
 
 class PizzaCartScreen extends StatefulWidget {
   final List<PizzaItemModel> items;
-  final PizzaItemModel item;
 
  const  PizzaCartScreen({
     super.key,
     required this.items,
-    required this.item,
   });
 
   @override

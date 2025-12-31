@@ -83,21 +83,6 @@ class PizzaItemModel {
     return (basePrice + optionsPrice) * quantity;
   }
 
-  double getCouponDiscount(String coupon, double price) {
-    double discount = 0.0;
-    switch (coupon) {
-      case '20':
-        discount = 0.2 * price;
-        break;
-      case '10':
-        discount = 0.1 * price;
-        break;
-      default:
-        discount = 0.0;
-    }
-    return discount;
-  }
-
   void toggleOption(PizzaItemModel option) {
     if (selectOptions.any((e) => e.id == option.id)) {
       selectOptions.removeWhere((e) => e.id == option.id);
