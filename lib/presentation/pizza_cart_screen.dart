@@ -1,62 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:task2ix/data/models/cart_model.dart';
 import 'package:task2ix/presentation/widgets/payment_summary_widget.dart';
+import '../data/models/coupon_model.dart';
 import '../data/models/pizza_item_model.dart';
 import 'package:task2ix/presentation/widgets/recommended_pizza_widget.dart';
 
 class PizzaCartScreen extends StatefulWidget {
   final List<PizzaItemModel> items;
   final PizzaItemModel item;
-  const PizzaCartScreen({super.key, required this.items, required this.item});
+
+ const  PizzaCartScreen({
+    super.key,
+    required this.items,
+    required this.item,
+  });
+
   @override
   State<PizzaCartScreen> createState() => _PizzaCartScreenState();
 }
 
 class _PizzaCartScreenState extends State<PizzaCartScreen> {
+  late CartModel cart;
+
   @override
   void initState() {
     super.initState();
     cart = CartModel(items: widget.items);
   }
 
-  late CartModel cart;
-  double couponDiscount = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Cart')),
+      appBar: AppBar(title:  Text('Cart')),
       bottomNavigationBar: Container(
         color: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        padding:  EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Row(
           children: [
             Text(
-              'Total: ${(cart.totalPrice - couponDiscount).toStringAsFixed(2)}',
-              style: TextStyle(
+              'Total: ${cart.totalPrice.toStringAsFixed(2)}',
+              style:  TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: Colors.deepOrange,
               ),
             ),
-            Spacer(),
-            ElevatedButton(onPressed: () {}, child: Text("Checkout")),
+             Spacer(),
+            ElevatedButton(onPressed: () {}, child:  Text("Checkout")),
           ],
         ),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(8),
+          padding:  EdgeInsets.all(8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics:  NeverScrollableScrollPhysics(),
                 itemCount: cart.items.length,
                 itemBuilder: (context, index) {
                   final item = cart.items[index];
                   return Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding:  EdgeInsets.all(8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -65,32 +72,32 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                           children: [
                             Text(
                               item.icon ?? '',
-                              style: TextStyle(fontSize: 80),
+                              style:  TextStyle(fontSize: 80),
                             ),
-                            SizedBox(width: 16),
+                             SizedBox(width: 16),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     item.name,
-                                    style: TextStyle(
+                                    style:  TextStyle(
                                       fontSize: 28,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  SizedBox(height: 8),
+                                   SizedBox(height: 8),
                                   Text(
                                     item.description,
-                                    style: TextStyle(
+                                    style:  TextStyle(
                                       fontSize: 16,
                                       color: Colors.grey,
                                     ),
                                   ),
-                                  SizedBox(height: 8),
+                                   SizedBox(height: 8),
                                   Text(
                                     "\$${item.getBasePrice.toStringAsFixed(2)}",
-                                    style: TextStyle(
+                                    style:  TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.deepOrange,
@@ -102,7 +109,8 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                             Column(
                               children: [
                                 IconButton(
-                                  icon: Icon(Icons.delete, color: Colors.red),
+                                  icon:  Icon(Icons.delete,
+                                      color: Colors.red),
                                   onPressed: () {
                                     setState(() {
                                       cart.removeItem(item.cartItemId);
@@ -121,27 +129,24 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                                   ),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                     children: [
                                       GestureDetector(
-                                        onTap:
-                                            () => setState(
-                                              () => item.increaseQty(),
-                                            ),
-                                        child: Icon(Icons.add, size: 18),
+                                        onTap: () =>
+                                            setState(item.increaseQty),
+                                        child:  Icon(Icons.add, size: 18),
                                       ),
                                       Text(
                                         item.quantity.toString(),
-                                        style: TextStyle(
+                                        style:  TextStyle(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                       GestureDetector(
-                                        onTap:
-                                            () => setState(
-                                              () => item.decreaseQty(),
-                                            ),
-                                        child: Icon(Icons.remove, size: 18),
+                                        onTap: () =>
+                                            setState(item.decreaseQty),
+                                        child:
+                                         Icon(Icons.remove, size: 18),
                                       ),
                                     ],
                                   ),
@@ -150,15 +155,15 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 20),
-                        Text(
+                         SizedBox(height: 20),
+                         Text(
                           "Add-ons:",
                           style: TextStyle(
                             fontSize: 19,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 10),
+                         SizedBox(height: 10),
                         SizedBox(
                           height: 100,
                           child: ListView.builder(
@@ -174,12 +179,12 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                                 },
                                 child: Container(
                                   width: 100,
-                                  margin: EdgeInsets.symmetric(horizontal: 8),
+                                  margin:  EdgeInsets.symmetric(
+                                      horizontal: 8),
                                   decoration: BoxDecoration(
-                                    color:
-                                        item.selectOptions.contains(option)
-                                            ? Colors.green.withOpacity(0.3)
-                                            : Colors.black12,
+                                    color: item.selectOptions.contains(option)
+                                        ? Colors.green.withOpacity(0.3)
+                                        : Colors.black12,
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                   child: Column(
@@ -187,14 +192,16 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                                     children: [
                                       Text(
                                         option.icon ?? '',
-                                        style: TextStyle(fontSize: 30),
+                                        style:
+                                         TextStyle(fontSize: 30),
                                       ),
-                                      SizedBox(height: 5),
+                                       SizedBox(height: 5),
                                       Text(option.name),
-                                      SizedBox(height: 5),
+                                       SizedBox(height: 5),
                                       Text(
                                         "\$${option.basePrice.toStringAsFixed(2)}",
-                                        style: TextStyle(fontSize: 14),
+                                        style:
+                                         TextStyle(fontSize: 14),
                                       ),
                                     ],
                                   ),
@@ -208,7 +215,9 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                   );
                 },
               ),
-              SizedBox(height: 20),
+
+               SizedBox(height: 20),
+
               RecommendedPizzaWidget(
                 onAdd: (pizza) {
                   setState(() {
@@ -216,48 +225,55 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                   });
                 },
               ),
-              SizedBox(height: 20),
+
+               SizedBox(height: 20),
+
               TextField(
-                autofocus: false,
-                decoration: InputDecoration(
+                decoration:  InputDecoration(
                   labelText: "Coupon Code",
                   border: OutlineInputBorder(),
                 ),
-                onChanged: (value) {
-                  double discount = 0;
-                  for (var item in cart.items) {
-                    discount += item.getCouponDiscount(
-                      value,
-                      item.calcItemPrice,
-                    );
-                  }
-
+                onSubmitted: (value) {
                   setState(() {
-                    couponDiscount = discount;
+                    cart.applyCoupon(value);
                   });
                 },
               ),
-              SizedBox(height: 20),
-              Text(
+
+               SizedBox(height: 20),
+
+               Text(
                 'Payment summary',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
-              SizedBox(height: 20),
+               SizedBox(height: 20),
 
               PaymentSummaryWidget(
                 value: '\$ ${cart.subTotalPrice.toStringAsFixed(2)}',
                 label: 'Subtotal',
               ),
-              SizedBox(height: 20),
+               SizedBox(height: 20),
               PaymentSummaryWidget(
-                value:'\$${cart.deliveryFee.toStringAsFixed(2)}',
+                value: '\$${cart.deliveryFee.toStringAsFixed(2)}',
                 label: 'Delivery fee',
               ),
-              SizedBox(height: 20), PaymentSummaryWidget(
-                value: cart.taxPercent.toStringAsFixed(2),
+               SizedBox(height: 20),
+              PaymentSummaryWidget(
+                value: '\$${cart.taxAmount.toStringAsFixed(2)}',
                 label: 'Tax Amount',
               ),
-              SizedBox(height: 20),
+               SizedBox(height: 1),
+
+              if (cart.appliedCoupon.type != CouponType.none)
+                Text(
+                  cart.appliedCoupon.type == CouponType.fixed
+                      ? 'Fixed discount applied: ${cart.appliedCoupon.value}'
+                      : 'Discount applied: ${cart.appliedCoupon.value}%',
+                  style:  TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
             ],
           ),
         ),
