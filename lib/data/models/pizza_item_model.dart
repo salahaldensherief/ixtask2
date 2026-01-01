@@ -73,7 +73,6 @@ class PizzaItemModel {
       "selectOptions": selectOptions.map((e) => e.toJson()).toList(),
     };
   }
-
   double get getBasePrice => basePrice;
 
   double get calcItemPrice {

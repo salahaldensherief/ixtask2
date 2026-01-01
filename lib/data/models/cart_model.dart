@@ -15,10 +15,8 @@ class CartModel {
     this.deliveryFee = 5,
     this.taxPercent = 0.14,
   });
-
   double get subTotalPrice =>
       items.fold(0.0, (sum, item) => sum + item.calcItemPrice);
-
 
   double get taxAmount => subTotalPrice * taxPercent;
 

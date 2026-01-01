@@ -295,8 +295,7 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                   style: TextStyle(
                     color: Colors.green,
                     fontWeight: FontWeight.bold,
-                  ),
-                ),
+                  ),),
             ],
           ),
         ),
