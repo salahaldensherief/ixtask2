@@ -1,12 +1,6 @@
-import 'coupon_model.dart';
 import 'pizza_item_model.dart';
 
-
-const Map<String, CouponModel> coupons = {
-  '5': CouponModel(CouponType.fixed, 5),
-  '10P': CouponModel(CouponType.percent, 10),
-  '20P': CouponModel(CouponType.percent, 20),
-};
+enum DiscountType { percent, fixed ,none }
 
 class CartModel {
   final List<PizzaItemModel> items;
@@ -14,50 +8,60 @@ class CartModel {
   int deliveryFee;
   double taxPercent;
 
-  CouponModel appliedCoupon = const CouponModel(CouponType.none, 0);
-
+  DiscountType discountType = DiscountType.none;
+  double discountInput = 0;
   CartModel({
     required this.items,
     this.deliveryFee = 5,
     this.taxPercent = 0.14,
   });
 
-
   double get subTotalPrice =>
       items.fold(0.0, (sum, item) => sum + item.calcItemPrice);
 
+
   double get taxAmount => subTotalPrice * taxPercent;
 
-  double get discountAmount {
-    switch (appliedCoupon.type) {
-      case CouponType.fixed:
-        return appliedCoupon.value;
-      case CouponType.percent:
-        return subTotalPrice * (appliedCoupon.value / 100);
-      case CouponType.none:
-        return 0;
+  void setDiscount(String value) {
+    discountInput = double.tryParse(value) ?? 0;
+  }
+
+  void toggleDiscountType() {
+    discountType = discountType == DiscountType.fixed
+        ? DiscountType.percent
+        : DiscountType.fixed;
+  }
+  void setDiscountType(DiscountType type) {
+    discountType = type;
+
+    if (type == DiscountType.none) {
+      discountInput = 0;
     }
   }
+
+  double get discountAmount {
+    double discount;
+
+    switch (discountType) {
+      case DiscountType.percent:
+        discount = subTotalPrice * (discountInput / 100);
+        break;
+
+      case DiscountType.fixed:
+        discount = discountInput;
+        break;
+
+      case DiscountType.none:
+        discount = 0;
+        break;
+    }
+
+    return discount;
+  }
+
 
   double get totalPrice =>
       subTotalPrice + deliveryFee + taxAmount - discountAmount;
-
-
-  bool applyCoupon(String code) {
-    final coupon = coupons[code];
-
-    if (coupon == null) {
-      appliedCoupon = const CouponModel(CouponType.none, 0);
-      return false;
-    }
-
-    appliedCoupon = coupon;
-    return true;
-  }
-
-  void removeCoupon() {
-    appliedCoupon = const CouponModel(CouponType.none, 0);
-  }
 
   void setDeliveryFee(int price) {
     deliveryFee = price;
@@ -77,6 +81,6 @@ class CartModel {
 
   void clearCart() {
     items.clear();
-    removeCoupon();
+    discountInput = 0;
   }
 }

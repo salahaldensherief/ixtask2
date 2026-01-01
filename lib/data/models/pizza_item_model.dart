@@ -41,7 +41,6 @@ class PizzaItemModel {
       quantity: 1,
     );
   }
-
   factory PizzaItemModel.fromJson(Map<String, dynamic> json) {
     return PizzaItemModel(
       id: json["id"],
@@ -82,7 +81,6 @@ class PizzaItemModel {
 
     return (basePrice + optionsPrice) * quantity;
   }
-
   void toggleOption(PizzaItemModel option) {
     if (selectOptions.any((e) => e.id == option.id)) {
       selectOptions.removeWhere((e) => e.id == option.id);
@@ -90,7 +88,6 @@ class PizzaItemModel {
       selectOptions.add(option);
     }
   }
-
   void increaseQty() => quantity++;
 
   void decreaseQty() {
