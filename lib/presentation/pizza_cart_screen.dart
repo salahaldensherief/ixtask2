@@ -14,6 +14,7 @@ class PizzaCartScreen extends StatefulWidget {
   @override
   State<PizzaCartScreen> createState() => _PizzaCartScreenState();
 }
+
 class _PizzaCartScreenState extends State<PizzaCartScreen> {
   late CartModel cart;
 
@@ -22,6 +23,7 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
     super.initState();
     cart = CartModel(items: widget.items);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,17 +104,6 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                             ),
                             Column(
                               children: [
-                                IconButton(
-                                  icon: Icon(Icons.delete, color: Colors.red),
-                                  onPressed: () {
-                                    setState(() {
-                                      cart.removeItem(item.cartItemId);
-                                      if (cart.items.isEmpty) {
-                                        Navigator.pop(context);
-                                      }
-                                    });
-                                  },
-                                ),
                                 Container(
                                   width: 90,
                                   height: 32,
@@ -134,10 +125,30 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      GestureDetector(
-                                        onTap: () => setState(item.decreaseQty),
-                                        child: Icon(Icons.remove, size: 18),
-                                      ),
+                                      item.quantity == 1
+                                          ? GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                cart.removeItem(
+                                                  item.cartItemId,
+                                                );
+                                                if (cart.items.isEmpty) {
+                                                  Navigator.pop(context);
+                                                }
+                                              });
+                                            },
+                                            child: Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                              size: 20,
+                                            ),
+                                          )
+                                          : GestureDetector(
+                                            onTap:
+                                                () =>
+                                                    setState(item.decreaseQty),
+                                            child: Icon(Icons.remove, size: 18),
+                                          ),
                                     ],
                                   ),
                                 ),
@@ -295,7 +306,8 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                   style: TextStyle(
                     color: Colors.green,
                     fontWeight: FontWeight.bold,
-                  ),),
+                  ),
+                ),
             ],
           ),
         ),

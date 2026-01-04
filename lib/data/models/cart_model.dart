@@ -15,6 +15,8 @@ class CartModel {
     this.deliveryFee = 5,
     this.taxPercent = 0.14,
   });
+
+
   double get subTotalPrice =>
       items.fold(0.0, (sum, item) => sum + item.calcItemPrice);
 
@@ -54,7 +56,12 @@ class CartModel {
         break;
     }
 
-    return discount;
+    if (discount > subTotalPrice) {
+      return subTotalPrice;
+    } else {
+      return discount;
+    }
+
   }
 
 

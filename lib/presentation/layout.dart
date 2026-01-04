@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task2ix/data/models/cart_model.dart';
 import 'package:task2ix/presentation/cubits/layout/pizza_layout_cubit.dart';
 import 'package:task2ix/presentation/pizza_cart_screen.dart';
 import 'package:task2ix/presentation/widgets/pizza_card.dart';
@@ -8,7 +9,8 @@ import '../data/repos/pizza_repo.dart';
 import '../data/source/local/pizza_data_source.dart';
 
 class Layout extends StatelessWidget {
-  const Layout({super.key});
+  late CartModel cart;
+   Layout({super.key});
   @override
   Widget build(BuildContext context) {
     PizzaLayoutCubit cubit = PizzaLayoutCubit(PizzaRepo(PizzaDataSource()));
@@ -39,7 +41,7 @@ class Layout extends StatelessWidget {
                     pizzas: pizzas[index],
                     icon: Icon(Icons.shopping_cart),
                     onPressed: () {
-                      final pizza = pizzas[index];
+                      final pizza = pizzas[index].cloneForCart();
                       cubit.items.add(pizza);
                       Navigator.of(context).push(
                         MaterialPageRoute(
