@@ -1,9 +1,9 @@
 import 'pizza_item_model.dart';
 
-enum DiscountType { percent, fixed ,none }
+enum DiscountType { percent, fixed, none }
 
 class CartModel {
-  final List<PizzaItemModel> items;
+  List<PizzaItemModel> items;
 
   int deliveryFee;
   double taxPercent;
@@ -16,7 +16,6 @@ class CartModel {
     this.taxPercent = 0.14,
   });
 
-
   double get subTotalPrice =>
       items.fold(0.0, (sum, item) => sum + item.calcItemPrice);
 
@@ -27,10 +26,12 @@ class CartModel {
   }
 
   void toggleDiscountType() {
-    discountType = discountType == DiscountType.fixed
-        ? DiscountType.percent
-        : DiscountType.fixed;
+    discountType =
+        discountType == DiscountType.fixed
+            ? DiscountType.percent
+            : DiscountType.fixed;
   }
+
   void setDiscountType(DiscountType type) {
     discountType = type;
 
@@ -61,10 +62,7 @@ class CartModel {
     } else {
       return discount;
     }
-
   }
-
-
   double get totalPrice =>
       subTotalPrice + deliveryFee + taxAmount - discountAmount;
 

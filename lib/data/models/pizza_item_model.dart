@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class PizzaItemModel {
   final String? id;
-
   final String cartItemId;
 
   final String name;
@@ -13,7 +12,6 @@ class PizzaItemModel {
   final List<PizzaItemModel> options;
 
   final List<PizzaItemModel> selectOptions;
-
   int quantity;
 
   PizzaItemModel({
@@ -92,4 +90,5 @@ class PizzaItemModel {
   void decreaseQty() {
     if (quantity > 1) quantity--;
   }
+
 }

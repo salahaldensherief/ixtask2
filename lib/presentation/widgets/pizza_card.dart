@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import '../../data/models/pizza_item_model.dart';
 
-class PizzaCard extends StatelessWidget {
+class PizzaCard extends StatefulWidget {
   final PizzaItemModel pizzas;
   final Icon? icon;
   void Function()? onPressed;
   PizzaCard({super.key, required this.pizzas,  this.icon,required this.onPressed});
 
+  @override
+  State<PizzaCard> createState() => _PizzaCardState();
+}
 
+class _PizzaCardState extends State<PizzaCard> {
   @override
   Widget build(BuildContext context) {
 
@@ -21,17 +25,17 @@ class PizzaCard extends StatelessWidget {
           children: [
             Expanded(
               child: Center(
-                child: Text(pizzas.icon!, style: TextStyle(fontSize: 64)),
+                child: Text(widget.pizzas.icon!, style: TextStyle(fontSize: 64)),
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              pizzas.name,
+              widget.pizzas.name,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             Text(
-              pizzas.description,
+              widget.pizzas.description,
               style: TextStyle(fontSize: 12, color: Colors.grey),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -40,15 +44,23 @@ class PizzaCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '\$${pizzas.basePrice}',
+                  '\$${widget.pizzas.basePrice}',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.deepOrange,
                   ),
                 ),
-                TextButton(onPressed:onPressed,
-                child:   icon?? Icon(Icons.shopping_cart)),
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: Colors.grey.shade200
+                  ),
+                  child: TextButton(onPressed:widget.onPressed,
+                  child:   widget.icon!),
+                ),
               ],
             ),
           ],

@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
       child: GestureDetector(
         onTap: ()=>  FocusScope.of(context).unfocus(),
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
             useMaterial3: false,

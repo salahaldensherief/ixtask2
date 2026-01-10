@@ -8,9 +8,16 @@ import 'package:task2ix/presentation/widgets/pizza_card.dart';
 import '../data/repos/pizza_repo.dart';
 import '../data/source/local/pizza_data_source.dart';
 
-class Layout extends StatelessWidget {
+class Layout extends StatefulWidget {
+  Layout({super.key});
+
+  @override
+  State<Layout> createState() => _LayoutState();
+}
+
+class _LayoutState extends State<Layout> {
   late CartModel cart;
-   Layout({super.key});
+
   @override
   Widget build(BuildContext context) {
     PizzaLayoutCubit cubit = PizzaLayoutCubit(PizzaRepo(PizzaDataSource()));
@@ -18,7 +25,21 @@ class Layout extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Pizza Menu'),
         centerTitle: true,
-
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 5),
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => PizzaCartScreen(items: cubit.items),
+                  ),
+                );
+              },
+              icon: Icon(Icons.shopping_cart),
+            ),
+          ),
+        ],
       ),
       body: BlocBuilder<PizzaLayoutCubit, PizzaLayoutState>(
         builder: (context, state) {
@@ -39,16 +60,10 @@ class Layout extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return PizzaCard(
                     pizzas: pizzas[index],
-                    icon: Icon(Icons.shopping_cart),
+                    icon:  Icon(Icons.add),
                     onPressed: () {
                       final pizza = pizzas[index].cloneForCart();
                       cubit.items.add(pizza);
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder:
-                              (context) => PizzaCartScreen(items: cubit.items,),
-                        ),
-                      );
                     },
                   );
                 },

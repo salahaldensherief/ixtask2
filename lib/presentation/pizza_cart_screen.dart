@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:task2ix/data/models/cart_model.dart';
+import 'package:task2ix/presentation/checkout_screen.dart';
 import 'package:task2ix/presentation/widgets/discount_Widget.dart';
 import 'package:task2ix/presentation/widgets/payment_summary_widget.dart';
-import '../data/models/cart_model.dart';
 import '../data/models/pizza_item_model.dart';
 import 'package:task2ix/presentation/widgets/recommended_pizza_widget.dart';
 
@@ -18,6 +18,7 @@ class PizzaCartScreen extends StatefulWidget {
 class _PizzaCartScreenState extends State<PizzaCartScreen> {
   late CartModel cart;
 
+
   @override
   void initState() {
     super.initState();
@@ -28,10 +29,10 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Cart')),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: widget.items.isEmpty ? SizedBox():Container(
         color: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        child: Row(
+        child:  Row(
           children: [
             Text(
               'Total: \$${cart.totalPrice.toStringAsFixed(2)}',
@@ -42,11 +43,17 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
               ),
             ),
             Spacer(),
-            ElevatedButton(onPressed: () {}, child: Text("Checkout")),
+            ElevatedButton(onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => CheckoutScreen(
+                cart: cart,
+              ),));
+            }, child: Text("Checkout")),
           ],
         ),
       ),
-      body: SingleChildScrollView(
+      body:  widget.items.isEmpty
+          ? Center(child: Text('Your cart is empty'))
+          : SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(8),
           child: Column(
@@ -220,11 +227,10 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
               RecommendedPizzaWidget(
                 onAdd: (pizza) {
                   setState(() {
-                    cart.addItem(pizza);
+                    cart.addItem(pizza.cloneForCart());
                   });
                 },
               ),
-
               SizedBox(height: 20),
 
               Row(
@@ -257,9 +263,7 @@ class _PizzaCartScreenState extends State<PizzaCartScreen> {
                   ),
                 ],
               ),
-
               SizedBox(height: 20),
-
               if (cart.discountType != DiscountType.none)
                 TextField(
                   keyboardType: TextInputType.number,
