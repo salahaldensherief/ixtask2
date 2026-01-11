@@ -58,6 +58,7 @@ class _LayoutState extends State<Layout> {
                 final isAdded = cubit.items.any(
                     (item) => item.id == pizzas[index].id,
                   );
+
                   final pizza = pizzas[index].cloneForCart();
                   return PizzaCard(
                     pizzas: pizzas[index],
@@ -66,6 +67,9 @@ class _LayoutState extends State<Layout> {
                       if (!isAdded) {
                         cubit.items.add(pizza);
                       setState(() {});
+
+                      }else if(!isAdded){
+                        cubit.items.remove(pizza);
                       }
                     },
                   );
