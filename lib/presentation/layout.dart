@@ -5,12 +5,8 @@ import 'package:task2ix/presentation/cubits/layout/pizza_layout_cubit.dart';
 import 'package:task2ix/presentation/pizza_cart_screen.dart';
 import 'package:task2ix/presentation/widgets/pizza_card.dart';
 
-import '../data/repos/pizza_repo.dart';
-import '../data/source/local/pizza_data_source.dart';
-
 class Layout extends StatefulWidget {
   Layout({super.key});
-
   @override
   State<Layout> createState() => _LayoutState();
 }
@@ -18,9 +14,10 @@ class Layout extends StatefulWidget {
 class _LayoutState extends State<Layout> {
   late CartModel cart;
 
+
   @override
   Widget build(BuildContext context) {
-    PizzaLayoutCubit cubit = PizzaLayoutCubit(PizzaRepo(PizzaDataSource()));
+    final cubit = context.read<PizzaLayoutCubit>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pizza Menu'),
@@ -58,12 +55,18 @@ class _LayoutState extends State<Layout> {
                   childAspectRatio: 0.75,
                 ),
                 itemBuilder: (context, index) {
+                final isAdded = cubit.items.any(
+                    (item) => item.id == pizzas[index].id,
+                  );
+                  final pizza = pizzas[index].cloneForCart();
                   return PizzaCard(
                     pizzas: pizzas[index],
-                    icon:  Icon(Icons.add),
+                    icon: isAdded ? Icon(Icons.check) : Icon(Icons.add),
                     onPressed: () {
-                      final pizza = pizzas[index].cloneForCart();
-                      cubit.items.add(pizza);
+                      if (!isAdded) {
+                        cubit.items.add(pizza);
+                      setState(() {});
+                      }
                     },
                   );
                 },

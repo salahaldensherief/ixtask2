@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class PizzaItemModel {
   final String? id;
   final String cartItemId;
-
   final String name;
   final String description;
   final double basePrice;
@@ -26,6 +25,8 @@ class PizzaItemModel {
     this.quantity = 1,
   }) : selectOptions = selectOptions ?? [],
        cartItemId = cartItemId ?? UniqueKey().toString();
+
+
 
   PizzaItemModel cloneForCart() {
     return PizzaItemModel(
@@ -90,5 +91,6 @@ class PizzaItemModel {
   void decreaseQty() {
     if (quantity > 1) quantity--;
   }
+
 
 }

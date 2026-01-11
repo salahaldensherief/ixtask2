@@ -3,7 +3,7 @@ import '../../data/models/pizza_item_model.dart';
 
 class PizzaCard extends StatefulWidget {
   final PizzaItemModel pizzas;
-  final Icon? icon;
+  final Widget? icon;
   void Function()? onPressed;
   PizzaCard({super.key, required this.pizzas,  this.icon,required this.onPressed});
 
