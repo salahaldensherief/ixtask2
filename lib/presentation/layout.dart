@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task2ix/data/models/cart_model.dart';
 import 'package:task2ix/presentation/cubits/layout/pizza_layout_cubit.dart';
 import 'package:task2ix/presentation/pizza_cart_screen.dart';
 import 'package:task2ix/presentation/widgets/pizza_card.dart';
 
 class Layout extends StatefulWidget {
-  Layout({super.key});
+ const Layout({super.key});
+
   @override
   State<Layout> createState() => _LayoutState();
 }
 
 class _LayoutState extends State<Layout> {
-  late CartModel cart;
-
-
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<PizzaLayoutCubit>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pizza Menu'),
@@ -33,7 +31,7 @@ class _LayoutState extends State<Layout> {
                   ),
                 );
               },
-              icon: Icon(Icons.shopping_cart),
+              icon: const Icon(Icons.shopping_cart),
             ),
           ),
         ],
@@ -55,29 +53,33 @@ class _LayoutState extends State<Layout> {
                   childAspectRatio: 0.75,
                 ),
                 itemBuilder: (context, index) {
-                final isAdded = cubit.items.any(
-                    (item) => item.id == pizzas[index].id,
+                  final pizzaItem = pizzas[index];
+                  final isAdded = cubit.items.any(
+                        (item) => item.id == pizzaItem.id,
                   );
-
-                  final pizza = pizzas[index].cloneForCart();
                   return PizzaCard(
-                    pizzas: pizzas[index],
-                    icon: isAdded ? Icon(Icons.check) : Icon(Icons.add),
-                    onPressed: () {
-                      if (!isAdded) {
-                        cubit.items.add(pizza);
-                      setState(() {});
+                    pizzas: pizzaItem,
+                    icon: (isAdded)
+                        ? const Icon(Icons.check)
+                        : (cubit.items.isEmpty ? const Icon(Icons.add) : const Icon(Icons.add)),
 
-                      }else if(!isAdded){
-                        cubit.items.remove(pizza);
-                      }
+                    onPressed: () {
+                      setState(() {
+                        if (!isAdded) {
+                          cubit.items.add(pizzaItem.cloneForCart());
+                        } else {
+                          cubit.items.removeWhere(
+                                (item) => item.id == pizzaItem.id,
+                          );
+                        }
+                      });
                     },
                   );
                 },
               ),
             );
           } else if (state is PizzaFailure) {
-            return Center(child: Text('there was an error'));
+            return const Center(child: Text('there was an error'));
           } else {
             return const SizedBox.shrink();
           }
