@@ -15,6 +15,7 @@ class Layout extends StatefulWidget {
 
 class _LayoutState extends State<Layout> {
   @override
+  @override
   Widget build(BuildContext context) {
     final cubit = context.read<PizzaLayoutCubit>();
 
@@ -25,12 +26,13 @@ class _LayoutState extends State<Layout> {
         actions: [
           IconButton(
             icon: const Icon(Icons.shopping_cart),
-            onPressed: () {
-              Navigator.of(context).push(
+            onPressed: () async {
+              await Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => PizzaCartScreen(items: cubit.items),
                 ),
               );
+              setState(() {});
             },
           ),
         ],
@@ -67,7 +69,7 @@ class _LayoutState extends State<Layout> {
 
                   final bool isAdded = cartIndex != -1;
                   final PizzaItemModel? cartItem =
-                  isAdded ? cubit.items[cartIndex] : null;
+                      isAdded ? cubit.items[cartIndex] : null;
 
                   return PizzaCard(
                     pizzas: pizzaItem,
@@ -79,6 +81,7 @@ class _LayoutState extends State<Layout> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
+                                    setState(() {});
                                     setState(() {
                                       if (cartItem!.quantity > 1) {
                                         cartItem.decreaseQty();
@@ -105,6 +108,7 @@ class _LayoutState extends State<Layout> {
 
                                 GestureDetector(
                                   onTap: () {
+                                    setState(() {});
                                     setState(() {
                                       cartItem.increaseQty();
                                     });
@@ -116,6 +120,7 @@ class _LayoutState extends State<Layout> {
                             : const Icon(Icons.add, size: 18),
 
                     onPressed: () {
+                      setState(() {});
                       setState(() {
                         if (!isAdded) {
                           cubit.items.add(pizzaItem.cloneForCart());
