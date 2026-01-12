@@ -4,6 +4,8 @@ import 'package:task2ix/presentation/cubits/layout/pizza_layout_cubit.dart';
 import 'package:task2ix/presentation/pizza_cart_screen.dart';
 import 'package:task2ix/presentation/widgets/pizza_card.dart';
 
+import '../data/models/pizza_item_model.dart';
+
 class Layout extends StatefulWidget {
   const Layout({super.key});
 
@@ -58,12 +60,14 @@ class _LayoutState extends State<Layout> {
                 ),
                 itemBuilder: (context, index) {
                   final pizzaItem = pizzas[index];
-                  final samePizza =
-                      cubit.items
-                          .where((item) => item.id == pizzaItem.id)
-                          .toList();
-                  final int count = samePizza.length;
-                  final bool isAdded = count > 0;
+
+                  final cartIndex = cubit.items.indexWhere(
+                    (item) => item.id == pizzaItem.id,
+                  );
+
+                  final bool isAdded = cartIndex != -1;
+                  final PizzaItemModel? cartItem =
+                  isAdded ? cubit.items[cartIndex] : null;
 
                   return PizzaCard(
                     pizzas: pizzaItem,
@@ -76,8 +80,10 @@ class _LayoutState extends State<Layout> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      if (samePizza.isNotEmpty) {
-                                        cubit.items.remove(samePizza.last);
+                                      if (cartItem!.quantity > 1) {
+                                        cartItem.decreaseQty();
+                                      } else {
+                                        cubit.items.removeAt(cartIndex);
                                       }
                                     });
                                   },
@@ -89,7 +95,7 @@ class _LayoutState extends State<Layout> {
                                     horizontal: 6,
                                   ),
                                   child: Text(
-                                    count.toString(),
+                                    cartItem!.quantity.toString(),
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,
@@ -100,7 +106,7 @@ class _LayoutState extends State<Layout> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      cubit.items.add(pizzaItem.cloneForCart());
+                                      cartItem.increaseQty();
                                     });
                                   },
                                   child: const Icon(Icons.add, size: 18),
@@ -111,7 +117,9 @@ class _LayoutState extends State<Layout> {
 
                     onPressed: () {
                       setState(() {
-                        cubit.items.add(pizzaItem.cloneForCart());
+                        if (!isAdded) {
+                          cubit.items.add(pizzaItem.cloneForCart());
+                        }
                       });
                     },
                   );
