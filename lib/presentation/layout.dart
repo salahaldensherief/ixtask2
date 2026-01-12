@@ -5,7 +5,7 @@ import 'package:task2ix/presentation/pizza_cart_screen.dart';
 import 'package:task2ix/presentation/widgets/pizza_card.dart';
 
 class Layout extends StatefulWidget {
- const Layout({super.key});
+  const Layout({super.key});
 
   @override
   State<Layout> createState() => _LayoutState();
@@ -21,18 +21,15 @@ class _LayoutState extends State<Layout> {
         title: const Text('Pizza Menu'),
         centerTitle: true,
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 5),
-            child: IconButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => PizzaCartScreen(items: cubit.items),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.shopping_cart),
-            ),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => PizzaCartScreen(items: cubit.items),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -40,8 +37,15 @@ class _LayoutState extends State<Layout> {
         builder: (context, state) {
           if (state is PizzaLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is PizzaSuccess) {
+          }
+
+          if (state is PizzaFailure) {
+            return const Center(child: Text('There was an error'));
+          }
+
+          if (state is PizzaSuccess) {
             final pizzas = state.pizza;
+
             return Padding(
               padding: const EdgeInsets.all(12),
               child: GridView.builder(
@@ -54,35 +58,69 @@ class _LayoutState extends State<Layout> {
                 ),
                 itemBuilder: (context, index) {
                   final pizzaItem = pizzas[index];
-                  final isAdded = cubit.items.any(
-                        (item) => item.id == pizzaItem.id,
-                  );
+                  final samePizza =
+                      cubit.items
+                          .where((item) => item.id == pizzaItem.id)
+                          .toList();
+                  final int count = samePizza.length;
+                  final bool isAdded = count > 0;
+
                   return PizzaCard(
                     pizzas: pizzaItem,
-                    icon: (isAdded)
-                        ? const Icon(Icons.check)
-                        : (cubit.items.isEmpty ? const Icon(Icons.add) : const Icon(Icons.add)),
+
+                    icon:
+                        isAdded
+                            ? Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      if (samePizza.isNotEmpty) {
+                                        cubit.items.remove(samePizza.last);
+                                      }
+                                    });
+                                  },
+                                  child: const Icon(Icons.remove, size: 18),
+                                ),
+
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                  ),
+                                  child: Text(
+                                    count.toString(),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      cubit.items.add(pizzaItem.cloneForCart());
+                                    });
+                                  },
+                                  child: const Icon(Icons.add, size: 18),
+                                ),
+                              ],
+                            )
+                            : const Icon(Icons.add, size: 18),
 
                     onPressed: () {
                       setState(() {
-                        if (!isAdded) {
-                          cubit.items.add(pizzaItem.cloneForCart());
-                        } else {
-                          cubit.items.removeWhere(
-                                (item) => item.id == pizzaItem.id,
-                          );
-                        }
+                        cubit.items.add(pizzaItem.cloneForCart());
                       });
                     },
                   );
                 },
               ),
             );
-          } else if (state is PizzaFailure) {
-            return const Center(child: Text('there was an error'));
-          } else {
-            return const SizedBox.shrink();
           }
+
+          return const SizedBox.shrink();
         },
       ),
     );
